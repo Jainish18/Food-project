@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Cravixo - Food Delivery App</title>
+    <meta name="description" content="Order delicious food online with Cravixo">
+    <meta name="theme-color" content="#FF5722">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="modern-styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Auth Screen -->
+        <div id="auth-screen" class="screen active">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <img src="/Images/cravixo-logo2-removebg-preview.png" alt="Cravixo Logo" class="auth-logo">
+                    <h1>Welcome to Cravixo</h1>
+                    <p>Please enter your details to continue</p>
+                </div>
+                <form id="auth-form">
+                    <div class="input-field">
+                        <span class="material-icons-round">person</span>
+                        <input type="text" id="name" placeholder=" " required>
+                        <label for="name">Full Name</label>
+                        <div class="error-message">Please enter your name</div>
+                    </div>
+                    <div class="input-field">
+                        <span class="material-icons-round">email</span>
+                        <input type="email" id="email" placeholder=" " required>
+                        <label for="email">Email Address</label>
+                        <div class="error-message">Please enter a valid email</div>
+                    </div>
+                    <div class="input-field">
+                        <span class="material-icons-round">phone</span>
+                        <input type="tel" id="phone" placeholder=" " required>
+                        <label for="phone">Phone Number</label>
+                        <div class="error-message">Please enter a valid phone number</div>
+                    </div>
+                    <button type="submit" class="button button-primary">
+                        Continue
+                        <span class="material-icons-round">arrow_forward</span>
+                    </button>
+                    
+                    <div class="login-options">
+                        <p class="login-options-title">Or continue with</p>
+                        <div class="login-options-container">
+                            <button type="button" class="button button-secondary login-option-button" onclick="quickLogin('guest')">
+                                <span class="material-icons-round">person_outline</span>
+                                Guest
+                            </button>
+                            <button type="button" class="button button-secondary login-option-button" onclick="quickLogin('demo')">
+                                <span class="material-icons-round">preview</span>
+                                Demo
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="main-app" class="screen">
+            <!-- Top App Bar -->
+            <div class="top-app-bar">
+                <h2 class="page-title">Cravixo</h2>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div id="user-credits" style="font-weight: 500; color: var(--primary);">0 Credits</div>
+                    <button class="icon-button" id="theme-toggle">
+                        <span class="material-icons-round">brightness_6</span>
+                    </button>
+                    <button class="icon-button" id="notifications-button" style="position: relative;">
+                        <span class="material-icons-round">notifications</span>
+                        <span class="notification-badge">2</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Container -->
+            <div class="content-container">
+                <!-- Home Screen -->
+                <div id="home-screen" class="screen-content active">
+                    <!-- Auto-sliding Banner -->
+                    <div class="ads-container">
+                        <!-- <div class="ads-banner"> -->
+                            <div class="ads-slides" id="ads-slides">
+                                <div class="ads-slide">
+                                    <img src="https://t4.ftcdn.net/jpg/06/78/31/35/360_F_678313575_fGs0oNoFVTzJV4fM1duyo1qqWqf1Yr0Y.jpg" alt="Special Offer">
+                                    <div class="ads-content">
+                                        <h3>Special Offer</h3>
+                                        <p>Get 20% off on all orders with code: WELCOME</p>
+                                    </div>
+                                </div>
+                                <div class="ads-slide">
+                                    <img src="https://b.zmtcdn.com/data/pictures/0/19664490/afb1873c8ef4cd894b695ebbd5d63aa8.jpg?fit=around|960:500&crop=960:500;*,*" alt="Free Delivery">
+                                    <div class="ads-content">
+                                        <h3>Free Delivery</h3>
+                                        <p>On orders over $25 - Limited time only!</p>
+                                    </div>
+                                </div>
+                                <div class="ads-slide">
+                                    <img src="https://img.freepik.com/free-photo/pizza-pizza-filled-with-tomatoes-salami-olives_140725-1200.jpg?t=st=1745321489~exp=1745325089~hmac=21945ba518195d65acf318c4f1b76faec8ec1b32455db0263674f6fc4d7800b5&w=826" alt="New Items">
+                                    <div class="ads-content">
+                                        <h3>New Menu Items</h3>
+                                        <p>Try our delicious new arrivals today!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ads-indicators" id="ads-indicators">
+                                <div class="ads-indicator active"></div>
+                                <div class="ads-indicator"></div>
+                                <div class="ads-indicator"></div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+                    
+                    <div class="categories">
+                        <button class="chip active" onclick="filterByCategory('all')">All</button>
+                        <button class="chip" onclick="filterByCategory('Pizza')">Pizza</button>
+                        <button class="chip" onclick="filterByCategory('Burger')">Burger</button>
+                        <button class="chip" onclick="filterByCategory('Sushi')">Sushi</button>
+                        <button class="chip" onclick="filterByCategory('Dessert')">Dessert</button>
+                        <button class="chip" onclick="filterByCategory('Popular')">Popular</button>
+                    </div>
+                    
+                    <div class="section-title">
+                        <h3>Popular Items</h3>
+                        <button class="chip" onclick="showScreen('search')">See All</button>
+                    </div>
+                    
+                    <div class="food-grid" id="food-grid">
+                        <!-- Food cards will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Search Screen -->
+                <div id="search-screen" class="screen-content">
+                    <div class="search-bar">
+                        <span class="material-icons-round">search</span>
+                        <input type="text" id="search-input" placeholder="Search for food...">
+                    </div>
+                    <div class="food-grid" id="search-results">
+                        
+                    </div>
+                    <div id="no-results" class="empty-state" style="display: none;">
+                        <span class="material-icons-round">search_off</span>
+                        <h3>No Results Found</h3>
+                        <p>Try a different search term</p>
+                    </div>
+                </div>
+
+                <!-- Orders Screen -->
+                <div id="orders-screen" class="screen-content">
+                    <div class="section-title">
+                        <h3>Your Orders</h3>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="chip active" onclick="filterOrders('all')">All</button>
+                            <button class="chip" onclick="filterOrders('pending')">Pending</button>
+                            <button class="chip" onclick="filterOrders('completed')">Completed</button>
+                        </div>
+                    </div>
+                    <div class="orders-list" id="orders-container">
+                        <!-- Orders will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Profile Screen -->
+                <div id="profile-screen" class="screen-content">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <span class="material-icons-round">account_circle</span>
+                        </div>
+                        <h3 id="profile-name"></h3>
+                        <p id="profile-email"></p>
+                        <p id="profile-phone"></p>
+                        
+                        <!-- User Stats -->
+                        <div class="user-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="user-level">1</div>
+                                <div class="stat-label">Level</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="user-orders">0</div>
+                                <div class="stat-label">Orders</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="user-credits-profile">0</div>
+                                <div class="stat-label">Credits</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-menu">
+                        <div class="menu-item" onclick="showAddressModal()">
+                            <span class="material-icons-round">location_on</span>
+                            <span>Delivery Address</span>
+                            <span class="material-icons-round">chevron_right</span>
+                        </div>
+                        <div class="menu-item" onclick="showPaymentModal()">
+                            <span class="material-icons-round">payment</span>
+                            <span>Payment Methods</span>
+                            <span class="material-icons-round">chevron_right</span>
+                        </div>
+                        <div class="menu-item" onclick="showSettingsModal()">
+                            <span class="material-icons-round">settings</span>
+                            <span>Settings</span>
+                            <span class="material-icons-round">chevron_right</span>
+                        </div>
+                        <div class="menu-item" onclick="showHelpModal()">
+                            <span class="material-icons-round">help</span>
+                            <span>Help & Support</span>
+                            <span class="material-icons-round">chevron_right</span>
+                        </div>
+                        <div class="menu-item" onclick="showScreen('orders')">
+                            <span class="material-icons-round">history</span>
+                            <span>Order History</span>
+                            <span class="material-icons-round">chevron_right</span>
+                        </div>
+                        <div class="menu-item" onclick="showFavoritesModal()">
+                            <span class="material-icons-round">favorite</span>
+                            <span>Favorites</span>
+                            <span class="material-icons-round">chevron_right</span>
+                        </div>
+                    </div>
+                    
+                    <div class="logout-container">
+                        <button class="button logout-button">
+                            <span class="material-icons-round">logout</span>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cart Button -->
+            <div class="cart-button" onclick="showCartModal()">
+                <span class="material-icons-round">shopping_cart</span>
+                <span class="notification-badge" id="cart-badge">0</span>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" onclick="showScreen('home')">
+                    <span class="material-icons-round">home</span>
+                    <span>Home</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('search')">
+                    <span class="material-icons-round">search</span>
+                    <span>Search</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('orders')">
+                    <span class="material-icons-round">receipt_long</span>
+                    <span>Orders</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('profile')">
+                    <span class="material-icons-round">person</span>
+                    <span>Profile</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Order Modal -->
+        <div class="modal" id="order-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Place Order</h4>
+                    <button class="icon-button" onclick="closeOrderModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="selected-food">
+                        <img id="order-food-image" src="/placeholder.svg" alt="Food Image">
+                        <div class="food-details">
+                            <h3 id="order-food-name"></h3>
+                            <p id="order-food-price"></p>
+                        </div>
+                    </div>
+                    <form id="order-form" onsubmit="event.preventDefault(); placeOrder();">
+                        <div class="input-field">
+                            <span class="material-icons-round">person</span>
+                            <input type="text" id="order-name" placeholder=" " required>
+                            <label for="order-name">Full Name</label>
+                            <div class="error-message">Please enter your name</div>
+                        </div>
+                        <div class="input-field">
+                            <span class="material-icons-round">phone</span>
+                            <input type="tel" id="order-phone" placeholder=" " required>
+                            <label for="order-phone">Mobile Number</label>
+                            <div class="error-message">Please enter a valid phone number</div>
+                        </div>
+                        <div class="input-field">
+                            <span class="material-icons-round">location_on</span>
+                            <input type="text" id="order-address" placeholder=" " required>
+                            <label for="order-address">Delivery Address</label>
+                            <div class="error-message">Please enter your delivery address</div>
+                        </div>
+                        <div class="input-field">
+                            <span class="material-icons-round">shopping_cart</span>
+                            <input type="number" id="order-quantity" min="1" value="1" placeholder=" " required>
+                            <label for="order-quantity">Quantity</label>
+                            <div class="error-message">Please enter a valid quantity</div>
+                        </div>
+                        <div class="input-field">
+                            <span class="material-icons-round">note</span>
+                            <textarea id="order-notes" placeholder=" " rows="3"></textarea>
+                            <label for="order-notes">Special Instructions (Optional)</label>
+                        </div>
+                        
+                        <!-- Delivery Options -->
+                        <div class="delivery-options">
+                            <p class="delivery-options-title">Delivery Method</p>
+                            <div class="delivery-options-container">
+                                <label class="delivery-option">
+                                    <input type="radio" name="delivery-method" value="standard" checked onchange="updateOrderTotal()">
+                                    <span>Standard</span>
+                                </label>
+                                <label class="delivery-option">
+                                    <input type="radio" name="delivery-method" value="express" onchange="updateOrderTotal()">
+                                    <span>Express</span>
+                                </label>
+                                <label class="delivery-option">
+                                    <input type="radio" name="delivery-method" value="premium" onchange="updateOrderTotal()">
+                                    <span>Premium</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Promo Code -->
+                        <div class="input-field">
+                            <span class="material-icons-round">local_offer</span>
+                            <input type="text" id="promo-code" placeholder=" ">
+                            <label for="promo-code">Promo Code</label>
+                            <button type="button" class="button button-secondary" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); height: 36px; padding: 0 12px;" onclick="applyPromoCode()">Apply</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="order-total">
+                        <span>Total Amount:</span>
+                        <span id="order-total-price">$0.00</span>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="button button-secondary" onclick="closeOrderModal()">Cancel</button>
+                        <button class="button button-primary" onclick="placeOrder()">
+                            <span class="material-icons-round">shopping_cart_checkout</span>
+                            Place Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Success Modal -->
+        <div class="modal" id="order-success-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Order Placed Successfully!</h4>
+                    <button class="icon-button" onclick="closeOrderSuccessModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="success-icon">
+                        <span class="material-icons-round">check_circle</span>
+                    </div>
+                    <div class="order-details">
+                        <h5>Order Details</h5>
+                        <p id="success-order-id"></p>
+                        <p id="success-order-items"></p>
+                        <p id="success-order-total"></p>
+                    </div>
+                    <div class="delivery-details">
+                        <h5>Delivery Details</h5>
+                        <p id="success-order-name"></p>
+                        <p id="success-order-phone"></p>
+                        <p id="success-order-address"></p>
+                        <p id="success-delivery-method"></p>
+                    </div>
+                    
+                    <!-- Tracking Progress -->
+                    <div class="tracking-container">
+                        <p class="tracking-title">Tracking Your Order</p>
+                        <div class="tracking-bar">
+                            <div id="tracking-progress" class="tracking-progress"></div>
+                        </div>
+                        <p class="tracking-eta">Estimated Delivery: 30 Minutes</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="button button-primary" onclick="closeOrderSuccessModal()">
+                        <span class="material-icons-round">done</span>
+                        Done
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Modal -->
+        <div class="modal" id="cart-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Your Cart</h4>
+                    <button class="icon-button" onclick="closeCartModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="cart-items">
+                        
+                    </div>
+                    <div id="empty-cart" class="empty-state">
+                        <span class="material-icons-round">shopping_cart</span>
+                        <h3>Your cart is empty</h3>
+                        <p>Add items to your cart to place an order</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="order-total">
+                        <span>Total:</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                    <button class="button button-primary" id="checkout-button" onclick="checkout()" disabled>
+                        <span class="material-icons-round">shopping_cart_checkout</span>
+                        Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Modal -->
+        <div class="modal" id="notifications-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Notifications</h4>
+                    <button class="icon-button" onclick="closeNotificationsModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="notifications-list">
+                        <!-- Notifications will be added here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="button button-secondary" onclick="clearNotifications()">
+                        <span class="material-icons-round">clear_all</span>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Modal -->
+        <div class="modal" id="address-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Delivery Addresses</h4>
+                    <button class="icon-button" onclick="closeAddressModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="addresses-list">
+                        <!-- Addresses will be added here -->
+                    </div>
+                    <button class="button button-primary" style="width: 100%; margin-top: 16px;" onclick="showAddAddressForm()">
+                        <span class="material-icons-round">add</span>
+                        Add New Address
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div class="modal" id="payment-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Payment Methods</h4>
+                    <button class="icon-button" onclick="closePaymentModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="payment-methods-list">
+                        <!-- Payment methods will be added here -->
+                    </div>
+                    <button class="button button-primary" style="width: 100%; margin-top: 16px;" onclick="showAddPaymentForm()">
+                        <span class="material-icons-round">add</span>
+                        Add Payment Method
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorites Modal -->
+        <div class="modal" id="favorites-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Your Favorites</h4>
+                    <button class="icon-button" onclick="closeFavoritesModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="favorites-list">
+                        <!-- Favorites will be added here -->
+                    </div>
+                    <div id="empty-favorites" class="empty-state">
+                        <span class="material-icons-round">favorite</span>
+                        <h3>No favorites yet</h3>
+                        <p>Add items to your favorites to see them here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settings-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Settings</h4>
+                    <button class="icon-button" onclick="closeSettingsModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="menu-item">
+                        <span class="material-icons-round">notifications</span>
+                        <span>Notifications</span>
+                        <label class="switch">
+                            <input type="checkbox" id="notifications-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="menu-item">
+                        <span class="material-icons-round">dark_mode</span>
+                        <span>Dark Mode</span>
+                        <label class="switch">
+                            <input type="checkbox" id="dark-mode-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="menu-item">
+                        <span class="material-icons-round">language</span>
+                        <span>Language</span>
+                        <select id="language-select" style="margin-left: auto; padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div class="modal" id="help-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Help & Support</h4>
+                    <button class="icon-button" onclick="closeHelpModal()">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="menu-item" onclick="showFAQ()">
+                        <span class="material-icons-round">help</span>
+                        <span>FAQ</span>
+                        <span class="material-icons-round">chevron_right</span>
+                    </div>
+                    <div class="menu-item" onclick="contactSupport()">
+                        <span class="material-icons-round">support_agent</span>
+                        <span>Contact Support</span>
+                        <span class="material-icons-round">chevron_right</span>
+                    </div>
+                    <div class="menu-item" onclick="reportIssue()">
+                        <span class="material-icons-round">bug_report</span>
+                        <span>Report an Issue</span>
+                        <span class="material-icons-round">chevron_right</span>
+                    </div>
+                    <div class="menu-item" onclick="showTerms()">
+                        <span class="material-icons-round">description</span>
+                        <span>Terms & Conditions</span>
+                        <span class="material-icons-round">chevron_right</span>
+                    </div>
+                    <div class="menu-item" onclick="showPrivacy()">
+                        <span class="material-icons-round">privacy_tip</span>
+                        <span>Privacy Policy</span>
+                        <span class="material-icons-round">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="modern-app.js"></script>
+</body>
+</html>
+
